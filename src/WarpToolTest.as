@@ -9,6 +9,7 @@ package
 	import flash.display.Sprite;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.utils.ByteArray;
 
@@ -26,7 +27,8 @@ package
 		private var warpTool:WarpTool;
 		public var points:Vector.<Point> = new Vector.<Point>;
 		public var dragPoints:Vector.<DragPoint> = new Vector.<DragPoint>;
-		private var showMesh:Boolean = true;
+		public var startCoords:Vector.<Point> = new Vector.<Point>;
+		private var showMesh:Boolean = false;
 		private var bitmap:Bitmap;
 		private var container:Sprite;
 		private var dotsContainer:Sprite;
@@ -73,14 +75,20 @@ package
 			this.warpTool.setupTriangles();
 			this.draw();
 
-			this.createDot(new Point(0, 0));
-			this.createDot(new Point(bitmap.width, 0));
-			this.createDot(new Point(bitmap.width, bitmap.height));
-			this.createDot(new Point(0, bitmap.height));
+			this.startCoords.push(new Point(0, 0));
+			this.startCoords.push(new Point(bitmap.width, 0));
+			this.startCoords.push(new Point(bitmap.width, bitmap.height));
+			this.startCoords.push(new Point(0, bitmap.height));
+			this.startCoords.push(new Point(bitmap.width / 2, 0));
+			this.startCoords.push(new Point(0, bitmap.height / 2));
+			this.startCoords.push(new Point(bitmap.width, bitmap.height / 2));
+			this.startCoords.push(new Point(bitmap.width / 2, bitmap.height));
+			this.startCoords.push(new Point(bitmap.width / 2, bitmap.height / 2));
+
+			for each (var point:Point in this.startCoords)
+				this.createDot(point);
+
 			
-//			this.createDot(new Point(bitmap.width / 2, 0));
-//			this.createDot(new Point(0, bitmap.height / 2));
-//			this.createDot(new Point(bitmap.width / 2, bitmap.height / 2));
 
 			this.warpTool.setup(points);
 		}
@@ -94,9 +102,9 @@ package
 			dragPoints.push(dot);
 		}
 
-		private function onMovedDot(event:Event = null):void
+		public function onMovedDot(event:Event = null):void
 		{
-			trace("onMovedDot");
+			// trace("onMovedDot");
 			var updatePoints:Vector.<Point> = new Vector.<Point>;
 
 			for each (var dragPoint:DragPoint in dragPoints) updatePoints.push(new Point(dragPoint.x + Math.random() * 0.01, dragPoint.y + Math.random() * 0.01));
@@ -104,12 +112,18 @@ package
 			this.draw();
 		}
 
-		private function draw():void
+		public function draw():void
 		{
 			container.graphics.clear();
 			container.graphics.lineStyle(1, 0x000000, this.showMesh ? 1 : 0);
 			this.warpTool.render();
 			container.graphics.endFill();
+		}
+
+		public function onPlayButtonClick(event:MouseEvent):void
+		{
+			var command:ICommand = new AnimateCommand();
+			command.execute(this);
 		}
 
 		public function onChangeMesh(event:Event):void
