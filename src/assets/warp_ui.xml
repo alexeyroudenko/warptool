@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<comps>
+	<Panel id="ui" x="0" y="0" width="400" height="50">
+		<VBox x="10" y="10" id="sliders">
+			<CheckBox label="Mesh" event="click:onChangeMesh" selected="true"/>
+			<CheckBox label="Dots" event="click:onChangeDots" selected="true"/>
+		</VBox>
+	</Panel>
+</comps>
