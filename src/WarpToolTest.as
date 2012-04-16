@@ -2,6 +2,7 @@ package
 {
 	import com.alexeyrudenko.tools.WarpTool;
 	import com.bit101.components.CheckBox;
+	import com.bit101.components.HUISlider;
 	import com.bit101.components.Style;
 	import com.bit101.utils.MinimalConfigurator;
 
@@ -104,9 +105,12 @@ package
 
 		public function onMovedDot(event:Event = null):void
 		{
-			// trace("onMovedDot");
-			var updatePoints:Vector.<Point> = new Vector.<Point>;
+			this.updateWarpTool();
+		}
 
+		private function updateWarpTool():void
+		{
+			var updatePoints:Vector.<Point> = new Vector.<Point>;
 			for each (var dragPoint:DragPoint in dragPoints) updatePoints.push(new Point(dragPoint.x + Math.random() * 0.01, dragPoint.y + Math.random() * 0.01));
 			this.warpTool.update(updatePoints);
 			this.draw();
@@ -124,6 +128,13 @@ package
 		{
 			var command:ICommand = new AnimateCommand();
 			command.execute(this);
+		}
+		
+		public function onSlide(event:Event):void
+		{
+			trace("onSlide " + HUISlider(event.target).value);
+			this.warpTool.moveWeight =  HUISlider(event.target).value;
+			this.updateWarpTool();
 		}
 
 		public function onChangeMesh(event:Event):void

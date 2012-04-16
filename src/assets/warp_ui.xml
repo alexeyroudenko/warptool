@@ -5,8 +5,13 @@
 			<CheckBox label="Mesh" event="click:onChangeMesh" selected="false"/>
 			<CheckBox label="Dots" event="click:onChangeDots" selected="true"/>
 		</VBox>
-		<VBox x="280" y="10" id="sliders">
-			<PushButton label="Play" event="click:onPlayButtonClick"/>
+		
+		<VBox x="80" y="10" id="sliders">
+			<HUISlider id="amount" width="250" label="MoveWeight" minimum="1" maximum="100" value="10" event="change:onSlide" />
+		</VBox>
+		
+		<VBox x="320" y="10" id="sliders">
+			<PushButton label="Play" width ="70" event="click:onPlayButtonClick"/>
 		</VBox>
 	</Panel>
 </comps>
